@@ -1,19 +1,26 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import React from 'react';
+import React, { useState } from 'react';
 import auth from '../../firebase.Config';
 
 const Singin = () => {
+    const [errorsee,seterrorsee]=useState('')
+
+
     const handalsingin=(e)=>{
         e.preventDefault()
         const email=e.target.email.value;
         const password=e.target.password.value;
         console.log(email,password)
+        seterrorsee('')
+
+
         createUserWithEmailAndPassword(auth,email,password)
         .then(result=>{
            console.log(result.user)
         })
         .catch(error=>{
             console.log(error.message)
+            seterrorsee(error.message)
         })
     }
     return (
@@ -25,7 +32,11 @@ const Singin = () => {
                 <input className='p-1 mb-3 w-3/4 text-2xl' placeholder='Password' type="password" name="password" id="" /><br />
                 <input className='btn btn-secondary w-3/4' type="submit" value="Sing in" />
             </form>
+            <p className={!errorsee && 'hidden'}>{errorsee}</p>
             </div>
+             
+                
+               
             
         </div>
     );
